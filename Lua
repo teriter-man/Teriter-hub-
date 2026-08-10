@@ -1,0 +1,320 @@
+local CoreGui = game:GetService("CoreGui")
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "TeriterMenu_UltraFixed"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = (syn and syn.protect_gui and syn.protect_gui(ScreenGui)) or CoreGui
+
+local MenuVisible, IsMaximized = false, false
+local NormalSize, NormalPosition = UDim2.new(0, 560, 0, 360), UDim2.new(0.5, -280, 0.5, -180)
+
+-- =========================================================================
+-- [ หน้าจอโหลดดิ้งสไตล์ Cinematic (Loading Screen) ]
+-- =========================================================================
+local LoadingFrame = Instance.new("Frame")
+LoadingFrame.Name = "LoadingFrame"
+LoadingFrame.Size = UDim2.new(0, 420, 0, 240)
+LoadingFrame.Position = UDim2.new(0.5, -210, 0.5, -120)
+LoadingFrame.BackgroundColor3 = Color3.fromRGB(15, 16, 20)
+LoadingFrame.BorderSizePixel = 0
+LoadingFrame.Parent = ScreenGui
+
+local LoadingCorner = Instance.new("UICorner") LoadingCorner.CornerRadius = UDim.new(0, 16) LoadingCorner.Parent = LoadingFrame
+local LoadingStroke = Instance.new("UIStroke") LoadingStroke.Thickness = 2 LoadingStroke.Color = Color3.fromRGB(0, 150, 255) LoadingStroke.Parent = LoadingFrame
+
+local LoadTitle = Instance.new("TextLabel")
+LoadTitle.Size = UDim2.new(1, 0, 0, 40)
+LoadTitle.Position = UDim2.new(0, 0, 0, 45)
+LoadTitle.BackgroundTransparency = 1
+LoadTitle.Text = "TERITER HUB V2"
+LoadTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+LoadTitle.TextSize = 26
+LoadTitle.Font = Enum.Font.GothamBold
+LoadTitle.Parent = LoadingFrame
+
+local LoadStatus = Instance.new("TextLabel")
+LoadStatus.Name = "LoadStatus"
+LoadStatus.Size = UDim2.new(1, 0, 0, 30)
+LoadStatus.Position = UDim2.new(0, 0, 0, 85)
+LoadStatus.BackgroundTransparency = 1
+LoadStatus.Text = "กำลังเชื่อมต่อคอร์ระบบ..."
+LoadStatus.TextColor3 = Color3.fromRGB(140, 145, 160)
+LoadStatus.TextSize = 13
+LoadStatus.Font = Enum.Font.GothamMedium
+LoadStatus.Parent = LoadingFrame
+
+local BarBackground = Instance.new("Frame")
+BarBackground.Size = UDim2.new(0, 320, 0, 8)
+BarBackground.Position = UDim2.new(0.5, -160, 0, 140)
+BarBackground.BackgroundColor3 = Color3.fromRGB(30, 32, 40)
+BarBackground.BorderSizePixel = 0
+BarBackground.Parent = LoadingFrame
+
+local BarBgCorner = Instance.new("UICorner") BarBgCorner.CornerRadius = UDim.new(1, 0) BarBgCorner.Parent = BarBackground
+
+local BarFill = Instance.new("Frame")
+BarFill.Name = "BarFill"
+BarFill.Size = UDim2.new(0, 0, 1, 0)
+BarFill.BackgroundColor3 = Color3.fromRGB(0, 190, 255)
+BarFill.BorderSizePixel = 0
+BarFill.Parent = BarBackground
+
+local BarFillCorner = Instance.new("UICorner") BarFillCorner.CornerRadius = UDim.new(1, 0) BarFillCorner.Parent = BarFill
+
+local PercentLabel = Instance.new("TextLabel")
+PercentLabel.Name = "PercentLabel"
+PercentLabel.Size = UDim2.new(1, 0, 0, 30)
+PercentLabel.Position = UDim2.new(0, 0, 0, 160)
+PercentLabel.BackgroundTransparency = 1
+PercentLabel.Text = "0%"
+PercentLabel.TextColor3 = Color3.fromRGB(0, 255, 180)
+PercentLabel.TextSize = 16
+PercentLabel.Font = Enum.Font.GothamBold
+PercentLabel.Parent = LoadingFrame
+
+-- =========================================================================
+-- [ หน้าต่างหลักดีไซ็น์พรีเมียม (MainWindow) ]
+-- =========================================================================
+local MainWindow = Instance.new("Frame")
+MainWindow.Size = NormalSize
+MainWindow.Position = NormalPosition
+MainWindow.BackgroundColor3 = Color3.fromRGB(24, 24, 28)
+MainWindow.BorderSizePixel = 0
+MainWindow.Active, MainWindow.Draggable, MainWindow.Visible = true, true, false
+MainWindow.Parent = ScreenGui
+
+local MainCorner = Instance.new("UICorner") MainCorner.CornerRadius = UDim.new(0, 14) MainCorner.Parent = MainWindow
+local MainStroke = Instance.new("UIStroke") MainStroke.Thickness = 1.5 MainStroke.Color = Color3.fromRGB(60, 60, 68) MainStroke.Parent = MainWindow
+
+local MainGradient = Instance.new("UIGradient")
+MainGradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(26, 27, 34)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(14, 14, 16))
+})
+MainGradient.Rotation = 90
+MainGradient.Parent = MainWindow
+
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Size = UDim2.new(0, 200, 0, 42)
+TitleLabel.Position = UDim2.new(0, 20, 0, 2)
+TitleLabel.BackgroundTransparency = 1
+TitleLabel.Text = "TERITER HUB V2"
+TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TitleLabel.TextSize = 16
+TitleLabel.Font = Enum.Font.GothamBold
+TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+TitleLabel.Parent = MainWindow
+
+local AccentLine = Instance.new("Frame")
+AccentLine.Size = UDim2.new(0, 75, 0, 3)
+AccentLine.Position = UDim2.new(0, 20, 0, 34)
+AccentLine.BorderSizePixel = 0
+AccentLine.BackgroundColor3 = Color3.fromRGB(115, 90, 255)
+AccentLine.Parent = MainWindow
+
+local ControlBox = Instance.new("Frame")
+ControlBox.Size = UDim2.new(0, 110, 0, 35)
+ControlBox.Position = UDim2.new(1, -115, 0, 5)
+ControlBox.BackgroundTransparency = 1
+ControlBox.Parent = MainWindow
+
+local BoxLayout = Instance.new("UIListLayout")
+BoxLayout.FillDirection = Enum.FillDirection.Horizontal
+BoxLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
+BoxLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+BoxLayout.SortOrder = Enum.SortOrder.LayoutOrder
+BoxLayout.Padding = UDim.new(0, 5)
+BoxLayout.Parent = ControlBox
+
+local Sidebar = Instance.new("Frame")
+Sidebar.Size = UDim2.new(0, 132, 0, 285)
+Sidebar.Position = UDim2.new(0, 15, 0, 60)
+Sidebar.BackgroundColor3 = Color3.fromRGB(28, 29, 36)
+Sidebar.BorderSizePixel = 0
+Sidebar.Parent = MainWindow
+
+local SidebarCorner = Instance.new("UICorner") SidebarCorner.CornerRadius = UDim.new(0, 12) SidebarCorner.Parent = Sidebar
+local SidebarStroke = Instance.new("UIStroke") SidebarStroke.Thickness = 1 SidebarStroke.Color = Color3.fromRGB(42, 44, 54) SidebarStroke.Parent = Sidebar
+
+local MainTab = Instance.new("TextButton")
+MainTab.Size = UDim2.new(1, -16, 0, 38)
+MainTab.Position = UDim2.new(0, 8, 0, 12)
+MainTab.BackgroundColor3 = Color3.fromRGB(115, 90, 255)
+MainTab.Text = "Main"
+MainTab.TextColor3 = Color3.fromRGB(255, 255, 255)
+MainTab.TextSize = 13
+MainTab.Font = Enum.Font.GothamBold
+MainTab.Parent = Sidebar
+
+local TabCorner = Instance.new("UICorner") TabCorner.CornerRadius = UDim.new(0, 10) TabCorner.Parent = MainTab
+local TabStroke = Instance.new("UIStroke") TabStroke.Thickness = 1 TabStroke.Color = Color3.fromRGB(135, 110, 255) TabStroke.Parent = MainTab
+
+local Container = Instance.new("ScrollingFrame")
+Container.Size = UDim2.new(0, 383, 0, 285)
+Container.Position = UDim2.new(0, 162, 0, 60)
+Container.BackgroundColor3 = Color3.fromRGB(14, 15, 18)
+Container.BorderSizePixel = 0
+Container.ScrollBarThickness = 3
+Container.ScrollBarImageColor3 = Color3.fromRGB(115, 90, 255)
+Container.Parent = MainWindow
+
+local ContainerCorner = Instance.new("UICorner") ContainerCorner.CornerRadius = UDim.new(0, 12) ContainerCorner.Parent = Container
+local ContainerStroke = Instance.new("UIStroke") ContainerStroke.Thickness = 1 ContainerStroke.Color = Color3.fromRGB(32, 33, 40) ContainerStroke.Parent = Container
+
+local ContainerLayout = Instance.new("UIListLayout")
+ContainerLayout.SortOrder = Enum.SortOrder.LayoutOrder
+ContainerLayout.Padding = UDim.new(0, 8)
+ContainerLayout.Parent = Container
+
+local ContainerPadding = Instance.new("UIPadding")
+ContainerPadding.PaddingTop = UDim.new(0, 12)
+ContainerPadding.PaddingLeft = UDim.new(0, 12)
+ContainerPadding.PaddingRight = UDim.new(0, 12)
+ContainerPadding.Parent = Container
+
+ContainerLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+    Container.CanvasSize = UDim2.new(0, 0, 0, ContainerLayout.AbsoluteContentSize.Y + 25)
+end)
+-- =========================================================================
+-- [ ระบบสร้างหัวข้อสวิตช์ Toggle และระบบวนลูปเปอร์เซ็นต์แบบ Direct ]
+-- =========================================================================
+local TweenService = game:GetService("TweenService")
+
+local CategoryLabel = Instance.new("TextLabel")
+CategoryLabel.Size = UDim2.new(1, 0, 0, 24)
+CategoryLabel.BackgroundTransparency = 1
+CategoryLabel.Text = "------- AIM -------"
+CategoryLabel.TextColor3 = Color3.fromRGB(120, 120, 125)
+CategoryLabel.TextSize = 13
+CategoryLabel.Font = Enum.Font.GothamBold
+CategoryLabel.LayoutOrder = 1
+CategoryLabel.Parent = Container
+
+local function createFeatureToggle(titleText, layoutOrder, callback)
+    local ToggleFrame = Instance.new("Frame")
+    ToggleFrame.Size = UDim2.new(1, 0, 0, 50)
+    ToggleFrame.BackgroundColor3 = Color3.fromRGB(24, 25, 30)
+    ToggleFrame.BorderSizePixel = 0
+    ToggleFrame.LayoutOrder = layoutOrder
+    ToggleFrame.Parent = Container
+
+    local FrameCorner = Instance.new("UICorner") FrameCorner.CornerRadius = UDim.new(0, 10) FrameCorner.Parent = ToggleFrame
+    local FrameStroke = Instance.new("UIStroke") FrameStroke.Thickness = 1 FrameStroke.Color = Color3.fromRGB(40, 42, 52) FrameStroke.Parent = ToggleFrame
+
+    local Label = Instance.new("TextLabel")
+    Label.Size = UDim2.new(0.6, 0, 1, 0)
+    Label.Position = UDim2.new(0, 14, 0, 0)
+    Label.BackgroundTransparency = 1
+    Label.Text = titleText
+    Label.TextColor3 = Color3.fromRGB(230, 230, 235)
+    Label.TextSize = 13
+    Label.Font = Enum.Font.GothamMedium
+    Label.TextXAlignment = Enum.TextXAlignment.Left
+    Label.Parent = ToggleFrame
+
+    local SwitchBg = Instance.new("TextButton")
+    SwitchBg.Size = UDim2.new(0, 46, 0, 24)
+    SwitchBg.Position = UDim2.new(1, -58, 0.5, -12)
+    SwitchBg.BackgroundColor3 = Color3.fromRGB(55, 55, 62)
+    SwitchBg.Text = ""
+    SwitchBg.BorderSizePixel = 0
+    SwitchBg.Parent = ToggleFrame
+
+    local SwitchBgCorner = Instance.new("UICorner") SwitchBgCorner.CornerRadius = UDim.new(1, 0) SwitchBgCorner.Parent = SwitchBg
+
+    local SwitchBall = Instance.new("Frame")
+    SwitchBall.Size = UDim2.new(0, 18, 0, 18)
+    SwitchBall.Position = UDim2.new(0, 3, 0.5, -9)
+    SwitchBall.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    SwitchBall.BorderSizePixel = 0
+    SwitchBall.Parent = SwitchBg
+
+    local BallCorner = Instance.new("UICorner") BallCorner.CornerRadius = UDim.new(1, 0) BallCorner.Parent = SwitchBall
+
+    local isEnabled = false
+    SwitchBg.MouseButton1Click:Connect(function()
+        isEnabled = not isEnabled
+        local tweenInfo = TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        
+        if isEnabled then
+            TweenService:Create(SwitchBall, tweenInfo, {Position = UDim2.new(1, -21, 0.5, -9)}):Play()
+            TweenService:Create(SwitchBg, tweenInfo, {BackgroundColor3 = Color3.fromRGB(115, 90, 255)}):Play()
+        else
+            TweenService:Create(SwitchBall, tweenInfo, {Position = UDim2.new(0, 3, 0.5, -9)}):Play()
+            TweenService:Create(SwitchBg, tweenInfo, {BackgroundColor3 = Color3.fromRGB(55, 55, 62)}):Play()
+        end
+        if callback then callback(isEnabled) end
+    end)
+end
+
+createFeatureToggle("Silent Aim", 2, function(state) print("Silent Aim:", state) end)
+createFeatureToggle("No Recoil", 3, function(state) print("No Recoil:", state) end)
+createFeatureToggle("No Spread", 4, function(state) print("No Spread:", state) end)
+createFeatureToggle("Trigger Bot", 5, function(state) print("Trigger Bot:", state) end)
+
+local function ToggleMenu()
+    MenuVisible = not MenuVisible
+    MainWindow.Visible = MenuVisible
+end
+
+local MaximizeBtn
+local function ToggleMaximize()
+    IsMaximized = not IsMaximized
+    if IsMaximized then
+        if MainWindow.Size == NormalSize then NormalPosition = MainWindow.Position end
+        MainWindow.Size = UDim2.new(1, 0, 1, 0) MainWindow.Position = UDim2.new(0, 0, 0, 0)
+        MainWindow.Draggable = false MainCorner.CornerRadius = UDim.new(0, 0) MainStroke.Thickness = 0
+        Sidebar.Size = UDim2.new(0, 142, 1, -75) Container.Size = UDim2.new(1, -177, 1, -75)
+        if MaximizeBtn then MaximizeBtn.Text = "🗖" end
+    else
+        MainWindow.Size = NormalSize MainWindow.Position = NormalPosition
+        MainWindow.Draggable = true MainCorner.CornerRadius = UDim.new(0, 12) MainStroke.Thickness = 1.5
+        Sidebar.Size = UDim2.new(0, 132, 0, 285) Container.Size = UDim2.new(0, 383, 0, 285)
+        if MaximizeBtn then MaximizeBtn.Text = "▢" end
+    end
+end
+
+local function createWinBtn(text, font, size, isClose, order, onClick)
+    local btn = Instance.new("TextButton")
+    btn.LayoutOrder = order btn.Font = font btn.TextSize = size btn.Text = text
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255) btn.BorderSizePixel = 0 btn.Parent = ControlBox
+    if isClose then
+        btn.Size = UDim2.new(0, 28, 0, 28) btn.BackgroundColor3 = Color3.fromRGB(232, 17, 35)
+        local c = Instance.new("UICorner") c.CornerRadius = UDim.new(0, 6) c.Parent = btn
+    else
+        btn.Size = UDim2.new(0, 32, 0, 28) btn.BackgroundTransparency = 1 btn.BackgroundColor3 = Color3.fromRGB(48, 50, 62)
+        btn.MouseEnter:Connect(function() btn.BackgroundTransparency = 0 end)
+        btn.MouseLeave:Connect(function() btn.BackgroundTransparency = 1 end)
+    end
+    if onClick then btn.MouseButton1Click:Connect(onClick) end
+    return btn
+end
+
+createWinBtn("—", Enum.Font.GothamMedium, 12, false, 1, ToggleMenu)
+MaximizeBtn = createWinBtn("▢", Enum.Font.Gotham, 12, false, 2, ToggleMaximize)
+createWinBtn("×", Enum.Font.GothamMedium, 20, true, 3, function() ScreenGui:Destroy() end)
+
+local ToggleButton = Instance.new("TextButton")
+ToggleButton.Size = UDim2.new(0, 48, 0, 48) ToggleButton.Position = UDim2.new(0, 15, 0, 120)
+ToggleButton.BackgroundColor3 = Color3.fromRGB(22, 23, 30) ToggleButton.BorderSizePixel = 0
+ToggleButton.Text = "T" ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255) ToggleButton.TextSize = 16
+ToggleButton.Font = Enum.Font.GothamBold ToggleButton.Active, ToggleButton.Draggable, ToggleButton.Visible = true, true, false
+ToggleButton.Parent = ScreenGui
+
+local ToggleCorner = Instance.new("UICorner") ToggleCorner.CornerRadius = UDim.new(1, 0) ToggleCorner.Parent = ToggleButton
+local ToggleStroke = Instance.new("UIStroke") ToggleStroke.Thickness = 2.5 ToggleStroke.Color = Color3.fromRGB(0, 190, 255) ToggleStroke.Parent = ToggleButton
+ToggleButton.MouseButton1Click:Connect(ToggleMenu)
+
+-- วนลูปเปอร์เซ็นต์โดยอ้างอิงตรงจากตัวแปรในส่วนที่ 1 ทันที แก้ปัญหาค้าง 0%
+task.spawn(function()
+    for i = 0, 100, 1 do
+        if i == 5 then LoadStatus.Text = "กำลังจัดเตรียมระบบคอร์ต่อสู้..."
+        elseif i == 45 then LoadStatus.Text = "สร้างปุ่มสวิตช์ฟังก์ชันแคปซูล..."
+        elseif i == 85 then LoadStatus.Text = "สร้างหมวดหมู่ AIM พรีเมียมเสร็จสิ้น..." end
+        PercentLabel.Text = tostring(i) .. "%"
+        BarFill.Size = UDim2.new(i / 100, 0, 1, 0)
+        task.wait(i < 30 and 0.01 or 0.015)
+    end
+    task.wait(0.4)
+    LoadingFrame:Destroy()
+    MenuVisible, MainWindow.Visible, ToggleButton.Visible = true, true, true
+end)
